@@ -1,13 +1,11 @@
-import Image from 'next/image';
-import { Inter } from '@next/font/google';
-import styles from './page.module.css';
+import React from "react";
 
-const inter = Inter({ subsets: ['latin'] });
-
-export default function Home() {
+const HomePage = () => {
   return (
-    <main>
-      <h1 className="text-2xl font-bold bg-red-600">Tailwind</h1>
-    </main>
+    <div>
+      <h1>Welcome to the MESSENGER!</h1>
+    </div>
   );
-}
+};
+
+export default HomePage;
