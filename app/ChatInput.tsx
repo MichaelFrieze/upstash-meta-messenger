@@ -1,12 +1,16 @@
 'use client';
 import React, { useState } from 'react';
+import useSWR from 'swr';
 import { v4 as uuid } from 'uuid';
 import { Message } from '../typings';
+import fetcher from '../utils/fetchMessages';
 
 const ChatInput = () => {
   const [input, setInput] = useState('');
+  const { data: messages, error, mutate } = useSWR('/api/getMessages', fetcher);
+  console.log(messages);
 
-  const addMessage = (e: React.FormEvent<HTMLFormElement>) => {
+  const addMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!input) return;
 
@@ -18,23 +22,25 @@ const ChatInput = () => {
       id,
       message: messageToSend,
       created_at: Date.now(),
-      username: 'Phil Lesh',
+      username: 'Kenneth Terry',
       profilePic: 'https://randomuser.me/api/portraits/men/52.jpg',
-      email: 'phil.lesh@example.com',
+      email: 'kenneth.terry@example.com',
     };
     const uploadMessageToUpstash = async () => {
-      const res = await fetch('/api/addMessage', {
+      const data = await fetch('/api/addMessage', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ message }),
-      });
-      const data = await res.json();
-      console.log('MESSAGE ADDED >>> ', data);
-    };
+      }).then((resp) => resp.json());
 
-    uploadMessageToUpstash();
+      return [data.message, ...messages!];
+    };
+    await mutate(uploadMessageToUpstash, {
+      optimisticData: [message, ...messages!],
+      rollbackOnError: true,
+    });
   };
 
   return (
