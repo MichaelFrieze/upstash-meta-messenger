@@ -1,35 +1,35 @@
-'use client';
-import React, { useState } from 'react';
-import useSWR from 'swr';
-import { v4 as uuid } from 'uuid';
-import { Message } from '../typings';
-import fetcher from '../utils/fetchMessages';
+"use client";
+import React, { useState } from "react";
+import useSWR from "swr";
+import { v4 as uuid } from "uuid";
+import { Message } from "../typings";
+import fetcher from "../utils/fetchMessages";
 
 const ChatInput = () => {
-  const [input, setInput] = useState('');
-  const { data: messages, error, mutate } = useSWR('/api/getMessages', fetcher);
+  const [input, setInput] = useState("");
+  const { data: messages, error, mutate } = useSWR("/api/getMessages", fetcher);
   console.log(messages);
   const addMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!input) return;
 
     const messageToSend = input;
-    setInput('');
+    setInput("");
 
     const id = uuid();
     const message: Message = {
       id,
       message: messageToSend,
       created_at: Date.now(),
-      username: 'Kenneth Terry',
-      profilePic: 'https://randomuser.me/api/portraits/men/52.jpg',
-      email: 'kenneth.terry@example.com',
+      username: "Kenneth Terry",
+      profilePic: "https://randomuser.me/api/portraits/men/52.jpg",
+      email: "kenneth.terry@example.com",
     };
     const uploadMessageToUpstash = async () => {
-      const data = await fetch('/api/addMessage', {
-        method: 'POST',
+      const data = await fetch("/api/addMessage", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ message }),
       }).then((resp) => resp.json());

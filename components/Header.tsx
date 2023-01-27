@@ -1,7 +1,7 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import React from 'react';
-import LogoutBtn from './LogoutBtn';
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+import LogoutBtn from "./LogoutBtn";
 
 const Header = () => {
   const session = true;
@@ -19,7 +19,7 @@ const Header = () => {
           />
           <div>
             <p className="text-blue-400">Logged in as:</p>
-            <p className="font-bold text-lg">Phil Lesh</p>
+            <p className="font-bold text-lg">Ken Tandrian</p>
           </div>
         </div>
         <LogoutBtn />

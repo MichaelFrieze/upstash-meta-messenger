@@ -1,10 +1,10 @@
-'use client';
-import React, { useEffect } from 'react';
-import useSWR from 'swr';
-import { clientPusher } from '../pusher';
-import { Message } from '../typings';
-import fetcher from '../utils/fetchMessages';
-import MessageComponent from './MessageComponent';
+"use client";
+import React, { useEffect } from "react";
+import useSWR from "swr";
+import { clientPusher } from "../pusher";
+import { Message } from "../typings";
+import fetcher from "../utils/fetchMessages";
+import MessageComponent from "./MessageComponent";
 
 type Props = {
   initialMessages: Message[];
@@ -15,11 +15,11 @@ const MessageList = ({ initialMessages }: Props) => {
     data: messages,
     error,
     mutate,
-  } = useSWR<Message[]>('/api/getMessages', fetcher);
+  } = useSWR<Message[]>("/api/getMessages", fetcher);
 
   useEffect(() => {
-    const channel = clientPusher.subscribe('messages');
-    channel.bind('new-message', async (data: Message) => {
+    const channel = clientPusher.subscribe("messages");
+    channel.bind("new-message", async (data: Message) => {
       // If you sent the message, no need to update cache
       if (messages?.find((m) => m.id === data.id)) return;
       if (!messages) {
